@@ -1,7 +1,8 @@
-#include <HardwareCAN.h>
 /*
    Uses STM32duino with Phono patch. Must add 33 and 95 CAN speeds
 */
+#include <HardwareCAN.h>
+#include "includes/defines.h"
 /////// === Настройки модуля! === ///////
 
 // не компилировать чужой код
