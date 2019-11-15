@@ -27,8 +27,10 @@
 #define PC13OFF 1
 #define DELAY 200
 
-
+#define TICK_DELAY 5000
 /****************************************** global variables ******************************************/
+long nextTickTime = 0;
+
 char CTemp1 = 0;
 char CTemp2 = 0;
 char CNapr;
@@ -90,19 +92,23 @@ void setup()
   digitalWrite(PC13, PC13OFF);
 }
 
-void loop()
-{
-  //  debug("loop");
-  /*
+void loop() {
+    /*
     while (canBus.available() > 0)
     { CAN_message_process(canBus.recv());
       canBus.free();
     }
-  */
+    */
 
-  while ( ( r_msg = canBus.recv() ) != NULL ) {
-    msReceivedMessageProcess(r_msg); // processing the incoming message
-    canBus.free();
-  } // close while
+        while ( ( r_msg = canBus.recv() ) != NULL ) {
+        msReceivedMessageProcess(r_msg); // processing the incoming message
+        canBus.free();
+
+    } // close while
+
+    if (millis() > nextTickTime) {
+        nextTickTime += TICK_DELAY;
+        log("tick");
+    }
 }
 // close void loop
