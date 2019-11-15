@@ -20,7 +20,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
          } else {
            flag_blocked = false;
            digitalWrite(PC13, PC13OFF);
-           Serial2.println("Blocking button is released");
+           UART.println("Blocking button is released");
          }
        }
        break;
@@ -70,7 +70,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
           if (r_msg->Data[0] == 0x23 && r_msg->Data[1] == 0x26) {
             CSpeed = r_msg->Data [6];
             if (CSpeed != p_CSpeed) {
-              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+              UART.println("<CSpeed:" + String(CSpeed) + ">");
               p_CSpeed = CSpeed;
             }
           }
@@ -79,7 +79,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
           if (r_msg->Data[0] == 0x24 && r_msg->Data[1] == 0x50) {
             CSpeed = r_msg->Data[3];
             if (CSpeed != p_CSpeed) {
-              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+              UART.println("<CSpeed:" + String(CSpeed) + ">");
               p_CSpeed = CSpeed;
             }
           }
@@ -88,7 +88,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
           CTemp1 = r_msg->Data[2];
           CTemp2 = r_msg->Data[4];
           if ((CTemp1 != p_CTemp1) || (CTemp2 != p_CTemp2)) {
-            Serial2.println("<CTemp:" + String(CTemp1) + String(CTemp2) + ">");
+            UART.println("<CTemp:" + String(CTemp1) + String(CTemp2) + ">");
             p_CTemp1 = CTemp1;
             p_CTemp2 = CTemp2;
           }
@@ -96,7 +96,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
         if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0xE0 && r_msg->Data[3] == 0xA4) {
           CNapr = r_msg->Data[2] - 0x21;
           if (CNapr != p_CNapr) {
-            Serial2.println("<CNapr:" + String(CNapr) + ">");
+            UART.println("<CNapr:" + String(CNapr) + ">");
             p_CNapr = CNapr;
           }
         }
@@ -108,14 +108,14 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
             CEco = 0x31;
           }
           if (CEco != p_CEco) {
-            Serial2.println("<CEco:" + String(CEco) + ">");
+            UART.println("<CEco:" + String(CEco) + ">");
             p_CEco = CEco;
           }
         }
         if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x50) {
           CSpeed = r_msg->Data[3];
           if (CSpeed != p_CSpeed) {
-            Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+            UART.println("<CSpeed:" + String(CSpeed) + ">");
             p_CSpeed = CSpeed;
           }
         }
@@ -124,11 +124,11 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
             CNapr = 0x38;
             CSpeed = 0x41;
             if (CNapr != p_CNapr) {
-              Serial2.println("<CNapr:" + String(CNapr) + ">");
+              UART.println("<CNapr:" + String(CNapr) + ">");
               p_CNapr = CNapr;
             }
             if (CSpeed != p_CSpeed) {
-              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+              UART.println("<CSpeed:" + String(CSpeed) + ">");
               p_CSpeed = CSpeed;
             }
           }
@@ -227,14 +227,14 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
         if (r_msg->Data[0] == MS_BATTERY) {
           VOLTAGE = (r_msg->Data[2]);
           if (VOLTAGE != p_VOLTAGE) {
-            Serial2.println("<voltage:" + data_to_str(VOLTAGE, 1) + ">");
+            UART.println("<voltage:" + data_to_str(VOLTAGE, 1) + ">");
             p_VOLTAGE = VOLTAGE;
           }
         }
         if (r_msg->Data[0] == MS_ENGINE_TEMP) {
           T_ENG = (((r_msg->Data[3]) * 256) + (r_msg->Data[4]));
           if (T_ENG != p_T_ENG) {
-            Serial2.println("<t_eng:" + data_to_str(T_ENG, 0) + ">");
+            UART.println("<t_eng:" + data_to_str(T_ENG, 0) + ">");
             p_T_ENG = T_ENG;
           }
         }
@@ -268,7 +268,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
         if (r_msg->Data[0] == 0x46) {
           RANGE = ((((r_msg->Data[2]) << 8) + (r_msg->Data[3])) / 2);
           if (RANGE != p_RANGE) {
-            Serial2.println("<range:" + String(RANGE) + ">");
+            UART.println("<range:" + String(RANGE) + ">");
             p_RANGE = RANGE;
           }
         }
@@ -280,11 +280,11 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
           COutT = (r_msg->Data[2] / 2) - 40;
           intCOutT = (r_msg->Data[2] / 2) - 40;
           if (intCOutT < 0) {
-            Serial2.println("<COutT:" + '-' + String(COutT) + ">");
+            UART.println("<COutT:" + '-' + String(COutT) + ">");
           }
           else
           {
-            Serial2.println("<COutT:" + String(COutT) + ">");
+            UART.println("<COutT:" + String(COutT) + ">");
           }
           p_COutT = COutT;
         }
@@ -326,6 +326,6 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
   sprintf (scan, "\n % d: % 04X # %02X %02X %02X %02X %02X %02X %02X %02X ", millis(),
            r_msg->ID, r_msg->Data[0], r_msg->Data[1], r_msg->Data[2], r_msg->Data[3],
            r_msg->Data[4], r_msg->Data[5], r_msg->Data[6], r_msg->Data[7]);
-  Serial2.print(scan);
+  UART.print(scan);
 #endif
 }
