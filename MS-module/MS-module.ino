@@ -3,14 +3,22 @@
    Uses STM32duino with Phono patch. Must add 33 and 95 CAN speeds
 */
 /////// === Настройки модуля! === ///////
+
+// не компилировать чужой код
+#define SKIP_ALIEN
+
 // Choose output serial port
 #define UART Serial2
+
 // Choose CAN pins
 #define CAN_GPIO_PINS_MS CAN_GPIO_PA11_PA12
 //#define CAN_GPIO_PINS_LS CAN_GPIO_PB8_PB9
+
 #define CAN_SEND_TIMEOUT 800
+
 // Uncomment to enable 'debug()' messages output
 #define DEBUG
+
 // Uncomment to enable 'log()' messages output
 #define LOG
 
@@ -70,59 +78,16 @@ void setup()
 void loop()
 {
   //  debug("loop");
-  while ( ( r_msg = canBus.recv() ) != NULL )
-  {
-    ///// processing the incoming message
-    if (r_msg->ID == 0x206) // steering wheel buttons
-    {
-      debug("steering wheel buttons");
-      // setting the flag_blocked flag [01 нажата кнопка] [81 пресет/верхняя на руле] []
-      if (r_msg->Data[1] == 0x81)
-      {
-        if (r_msg->Data[0] == 0x01)
-        {
-          flag_blocked = true;
-          digitalWrite(PC13, PC13ON);
-          log("Blocking button is pressed");
-        }
-        else
-        {
-          flag_blocked = false;
-          digitalWrite(PC13, PC13OFF);
-          Serial2.println("Blocking button is released");
-        }
-      }
+  /*
+    while (canBus.available() > 0)
+    { CAN_message_process(canBus.recv());
+      canBus.free();
     }
-    else if (r_msg->ID == 0x208) //climate controls
-    {
-      debug("climate controls");
-      // check block button pressed
-      if (flag_blocked)
-      { // if block pressed, just skip it
-        // do nothing
-      }
-      else
-      {
-        // check if the climate control menu is pressed
-        if (
-          (r_msg->Data[0] == 0x01) and
-          (r_msg->Data[1] == 0x17) and
-          (r_msg->Data[2] == 0x00) //?
-        )
-        { // AC triggering script
-          log("blocking is NOT pressed");
-          log("Running AC triggering script");
-          msAcTrigger();
-          log("Done.");
-          digitalWrite(PC13, PC13OFF);
-        }
-        //end AC triggering script
-      }
-      // end if
-    }
-    canBus.free();
+  */
 
-  }
-  // close while
+  while ( ( r_msg = canBus.recv() ) != NULL ) {
+    msReceivedMessageProcess(r_msg); // processing the incoming message
+    canBus.free();
+  } // close while
 }
 // close void loop
