@@ -31,17 +31,23 @@
 /****************************************** global variables ******************************************/
 long nextTickTime = 0;
 
+// climate data
 char CTemp1 = 0;
 char CTemp2 = 0;
 char CNapr;
 char CSpeed;
 char CEco;
-char COutT;
 char p_CTemp1;
 char p_CTemp2;
 char p_CNapr;
 char p_CSpeed;
 char p_CEco;
+// outdoor
+int intCOutT;
+char COutT;
+char p_COutT;
+
+
 
 volatile bool flag_blocked;
 // Instanciation of CAN interface

@@ -136,6 +136,22 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
         break;
       }
 
+    case MS_TEMP_OUT_DOOR_ID: {
+        if ((r_msg->Data[0] == 0x46) && (COutT != p_COutT)) {
+          COutT = (r_msg->Data[2] / 2) - 40;
+          intCOutT = (r_msg->Data[2] / 2) - 40;
+          if (intCOutT < 0) {
+            UART.println("<COutT:" + '-' + String(COutT) + ">");
+          }
+          else
+          {
+            UART.println("<COutT:" + String(COutT) + ">");
+          }
+          p_COutT = COutT;
+        }
+        break;
+      }
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //       не мои
@@ -271,22 +287,6 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
             UART.println("<range:" + String(RANGE) + ">");
             p_RANGE = RANGE;
           }
-        }
-        break;
-      }
-
-    case MS_TEMP_OUT_DOOR_ID: {
-        if ((r_msg->Data[0] == 0x46) && (COutT != p_COutT)) {
-          COutT = (r_msg->Data[2] / 2) - 40;
-          intCOutT = (r_msg->Data[2] / 2) - 40;
-          if (intCOutT < 0) {
-            UART.println("<COutT:" + '-' + String(COutT) + ">");
-          }
-          else
-          {
-            UART.println("<COutT:" + String(COutT) + ">");
-          }
-          p_COutT = COutT;
         }
         break;
       }
