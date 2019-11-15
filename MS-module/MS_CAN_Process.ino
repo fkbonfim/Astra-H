@@ -50,6 +50,92 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
        break;
      }
 
+    case MS_CLIMATE_INFO_ID: {
+        if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0x24) {
+          CTemp1 = r_msg->Data[2];
+          CTemp2 = r_msg->Data[4];
+        }
+        if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x01 && r_msg->Data[2] == 0xE0) {
+          CNapr = r_msg->Data[3] - 0x21;
+        }
+        if (r_msg->Data[0] == 0x22 && r_msg->Data[4] == 0x25) {
+          if (r_msg->Data[5] == 0x01) {
+            CEco = 0x30;
+          }
+          if (r_msg->Data[5] == 0x03) {
+            CEco = 0x31;
+          }
+        }
+        if (CEco == 0x30) {
+          if (r_msg->Data[0] == 0x23 && r_msg->Data[1] == 0x26) {
+            CSpeed = r_msg->Data [6];
+            if (CSpeed != p_CSpeed) {
+              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+              p_CSpeed = CSpeed;
+            }
+          }
+        }
+        if (CEco == 0x31) {
+          if (r_msg->Data[0] == 0x24 && r_msg->Data[1] == 0x50) {
+            CSpeed = r_msg->Data[3];
+            if (CSpeed != p_CSpeed) {
+              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+              p_CSpeed = CSpeed;
+            }
+          }
+        }
+        if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0xA3) {
+          CTemp1 = r_msg->Data[2];
+          CTemp2 = r_msg->Data[4];
+          if ((CTemp1 != p_CTemp1) || (CTemp2 != p_CTemp2)) {
+            Serial2.println("<CTemp:" + String(CTemp1) + String(CTemp2) + ">");
+            p_CTemp1 = CTemp1;
+            p_CTemp2 = CTemp2;
+          }
+        }
+        if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0xE0 && r_msg->Data[3] == 0xA4) {
+          CNapr = r_msg->Data[2] - 0x21;
+          if (CNapr != p_CNapr) {
+            Serial2.println("<CNapr:" + String(CNapr) + ">");
+            p_CNapr = CNapr;
+          }
+        }
+        if (r_msg->Data[0] == 0x10 && r_msg->Data[6] == 0x25) {
+          if (r_msg->Data[7] == 0x01) {
+            CEco = 0x30;
+          }
+          if (r_msg->Data[7] == 0x03) {
+            CEco = 0x31;
+          }
+          if (CEco != p_CEco) {
+            Serial2.println("<CEco:" + String(CEco) + ">");
+            p_CEco = CEco;
+          }
+        }
+        if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x50) {
+          CSpeed = r_msg->Data[3];
+          if (CSpeed != p_CSpeed) {
+            Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+            p_CSpeed = CSpeed;
+          }
+        }
+        if ( r_msg->Data[0] == 0x25 && r_msg->Data[1] == 0xA5 && r_msg->Data[2] == 0x02  && r_msg->Data[4] == 0x50 && r_msg->Data[5] == 0x00 && r_msg->Data[6] == 0x41 && r_msg->Data[7] == 0x59) {
+          if (r_msg->Data[3] == 0xE0) {
+            CNapr = 0x38;
+            CSpeed = 0x41;
+            if (CNapr != p_CNapr) {
+              Serial2.println("<CNapr:" + String(CNapr) + ">");
+              p_CNapr = CNapr;
+            }
+            if (CSpeed != p_CSpeed) {
+              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
+              p_CSpeed = CSpeed;
+            }
+          }
+        }
+        break;
+      }
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //       не мои
@@ -58,6 +144,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
 
 
 #ifndef SKIP_ALIEN
+
     case MS_WHEEL_BUTTONS_ID: {
         switch (r_msg->Data[1]) {
           case MS_BTN_VOL: {
@@ -188,92 +275,6 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
         break;
       }
 
-    case MS_CLIMATE_INFO_ID: {
-        if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0x24) {
-          CTemp1 = r_msg->Data[2];
-          CTemp2 = r_msg->Data[4];
-        }
-        if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x01 && r_msg->Data[2] == 0xE0) {
-          CNapr = r_msg->Data[3] - 0x21;
-        }
-        if (r_msg->Data[0] == 0x22 && r_msg->Data[4] == 0x25) {
-          if (r_msg->Data[5] == 0x01) {
-            CEco = 0x30;
-          }
-          if (r_msg->Data[5] == 0x03) {
-            CEco = 0x31;
-          }
-        }
-        if (CEco == 0x30) {
-          if (r_msg->Data[0] == 0x23 && r_msg->Data[1] == 0x26) {
-            CSpeed = r_msg->Data [6];
-            if (CSpeed != p_CSpeed) {
-              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
-              p_CSpeed = CSpeed;
-            }
-          }
-        }
-        if (CEco == 0x31) {
-          if (r_msg->Data[0] == 0x24 && r_msg->Data[1] == 0x50) {
-            CSpeed = r_msg->Data[3];
-            if (CSpeed != p_CSpeed) {
-              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
-              p_CSpeed = CSpeed;
-            }
-          }
-        }
-        if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0xA3) {
-          CTemp1 = r_msg->Data[2];
-          CTemp2 = r_msg->Data[4];
-          if ((CTemp1 != p_CTemp1) || (CTemp2 != p_CTemp2)) {
-            Serial2.println("<CTemp:" + String(CTemp1) + String(CTemp2) + ">");
-            p_CTemp1 = CTemp1;
-            p_CTemp2 = CTemp2;
-          }
-        }
-        if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0xE0 && r_msg->Data[3] == 0xA4) {
-          CNapr = r_msg->Data[2] - 0x21;
-          if (CNapr != p_CNapr) {
-            Serial2.println("<CNapr:" + String(CNapr) + ">");
-            p_CNapr = CNapr;
-          }
-        }
-        if (r_msg->Data[0] == 0x10 && r_msg->Data[6] == 0x25) {
-          if (r_msg->Data[7] == 0x01) {
-            CEco = 0x30;
-          }
-          if (r_msg->Data[7] == 0x03) {
-            CEco = 0x31;
-          }
-          if (CEco != p_CEco) {
-            Serial2.println("<CEco:" + String(CEco) + ">");
-            p_CEco = CEco;
-          }
-        }
-        if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x50) {
-          CSpeed = r_msg->Data[3];
-          if (CSpeed != p_CSpeed) {
-            Serial2.println("<CSpeed:" + String(CSpeed) + ">");
-            p_CSpeed = CSpeed;
-          }
-        }
-        if ( r_msg->Data[0] == 0x25 && r_msg->Data[1] == 0xA5 && r_msg->Data[2] == 0x02  && r_msg->Data[4] == 0x50 && r_msg->Data[5] == 0x00 && r_msg->Data[6] == 0x41 && r_msg->Data[7] == 0x59) {
-          if (r_msg->Data[3] == 0xE0) {
-            CNapr = 0x38;
-            CSpeed = 0x41;
-            if (CNapr != p_CNapr) {
-              Serial2.println("<CNapr:" + String(CNapr) + ">");
-              p_CNapr = CNapr;
-            }
-            if (CSpeed != p_CSpeed) {
-              Serial2.println("<CSpeed:" + String(CSpeed) + ">");
-              p_CSpeed = CSpeed;
-            }
-          }
-        }
-        break;
-      }
-
     case MS_TEMP_OUT_DOOR_ID: {
         if ((r_msg->Data[0] == 0x46) && (COutT != p_COutT)) {
           COutT = (r_msg->Data[2] / 2) - 40;
@@ -315,6 +316,7 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
         }
         break;
       }
+
 #endif
 
   }

@@ -26,7 +26,21 @@
 #define PC13ON 0
 #define PC13OFF 1
 #define DELAY 200
-/* global variables */
+
+
+/****************************************** global variables ******************************************/
+char CTemp1 = 0;
+char CTemp2 = 0;
+char CNapr;
+char CSpeed;
+char CEco;
+char COutT;
+char p_CTemp1;
+char p_CTemp2;
+char p_CNapr;
+char p_CSpeed;
+char p_CEco;
+
 volatile bool flag_blocked;
 // Instanciation of CAN interface
 HardwareCAN canBus(CAN1_BASE);

@@ -85,6 +85,7 @@ int RANGE = 0;
 int p_RANGE = 0;
 int window = 0;
 int intCOutT;
+
 char CTemp1 = 0;
 char CTemp2 = 0;
 char CNapr;
@@ -96,6 +97,7 @@ char p_CTemp2;
 char p_CNapr;
 char p_CSpeed;
 char p_CEco;
+
 char p_COutT;
 uint32_t btn = 0;
 uint32_t time_request_ecc = 0;
