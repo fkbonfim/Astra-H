@@ -84,8 +84,10 @@ void msCANSetup(void)
   canBus.free();
 
   //  canBus.filter(0, 0, 0);
-  canBus.filter(0, 0x206 << 21, 0xFFFFFFFF) ;   // filter 0 only allows standard identifier 0x206
-  canBus.filter(1, 0x208 << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
+  canBus.filter(0, MS_TEMP_OUT_DOOR_ID << 21, 0xFFFFFFFF) ;   // filter 0 only allows standard identifier 0x206
+  canBus.filter(1, MS_CLIMATE_INFO_ID << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
+  canBus.filter(1, MS_CLIMATE_CONTROLS_ID << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
+  canBus.filter(1, MS_WHEEL_BUTTONS_ID << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
   canBus.set_irq_mode();              // Use irq mode (recommended)
   Stat = canBus.status();
   if (Stat != CAN_OK)
