@@ -83,19 +83,19 @@ void msCANSetup(void)
   Stat = canBus.begin(CAN_SPEED_95, CAN_MODE_NORMAL);
   canBus.free();
 
-  //  canBus.filter(0, 0, 0);
-  canBus.filter(0, MS_TEMP_OUT_DOOR_ID << 21, 0xFFFFFFFF) ;   // filter 0 only allows standard identifier 0x206
-  canBus.filter(1, MS_CLIMATE_INFO_ID << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
-  canBus.filter(1, MS_CLIMATE_CONTROLS_ID << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
-  canBus.filter(1, MS_WHEEL_BUTTONS_ID << 21, 0xFFFFFFFF) ;   // filter 1 only allows standard identifier 0x208
+//    canBus.filter(0, 0, 0);
+  canBus.filter(0, MS_TEMP_OUT_DOOR_ID << 21, 0xFFFFFFFF) ;   // 0x683
+  canBus.filter(1, MS_CLIMATE_INFO_ID << 21, 0xFFFFFFFF) ;   // 0x6c8
+  canBus.filter(2, MS_CLIMATE_CONTROLS_ID << 21, 0xFFFFFFFF) ;   //  0x208
+  canBus.filter(3, MS_WHEEL_BUTTONS_ID << 21, 0xFFFFFFFF) ;   // 0x206
   canBus.set_irq_mode();              // Use irq mode (recommended)
   Stat = canBus.status();
-  if (Stat != CAN_OK)
-  { // Initialization failed
-    digitalWrite(PC13, LOW);
-    delay(10000);
-    log("Initialization failed");
+  if (Stat != CAN_OK) { // Initialization failed
+        digitalWrite(PC13, LOW);
+        log("Initialization failed");
+        delay(10000);
   }
+  log("Initialization ok?");
 }
 
 #ifdef CAN_GPIO_PINS_LS
@@ -182,8 +182,8 @@ void printMsg(void) {
  * Send message
  * optimized by https://github.com/Gegerd
 */
-void SendCANmessage(long id = 0x100, byte dlength = 8, byte d0 = 0x00, byte d1 = 0x00, byte d2 = 0x00, byte d3 = 0x00, byte d4 = 0x00, byte d5 = 0x00, byte d6 = 0x00, byte d7 = 0x00)
-{ CanMsg msg ;
+void SendCANmessage(long id = 0x100, byte dlength = 8, byte d0 = 0x00, byte d1 = 0x00, byte d2 = 0x00, byte d3 = 0x00, byte d4 = 0x00, byte d5 = 0x00, byte d6 = 0x00, byte d7 = 0x00) {
+  CanMsg msg ;
   msg.IDE = CAN_ID_STD;
   msg.RTR = CAN_RTR_DATA;
   msg.ID = id ;

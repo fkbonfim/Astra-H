@@ -12,8 +12,8 @@
 #define UART Serial2
 
 // Choose CAN pins
-#define CAN_GPIO_PINS_MS CAN_GPIO_PA11_PA12
-//#define CAN_GPIO_PINS_LS CAN_GPIO_PB8_PB9
+#define CAN_GPIO_PINS_MS CAN_GPIO_PB8_PB9
+//#define CAN_GPIO_PINS_LS  CAN_GPIO_PA11_PA12
 
 #define CAN_SEND_TIMEOUT 800
 
@@ -114,6 +114,7 @@ void loop() {
 
     if (millis() > nextTickTime) {
         nextTickTime += TICK_DELAY;
+        msWakeUpScreen(); // only MS
         log("tick");
     }
 }

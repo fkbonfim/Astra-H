@@ -3,6 +3,16 @@
 //                All processing and HEXoding of CAN messages is here.                 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 void msReceivedMessageProcess(CanMsg *r_msg) {
+
+#ifdef DEBUG
+//  char scan[40];
+//  sprintf (scan, "\n % d: % 04X # %02X %02X %02X %02X %02X %02X %02X %02X ", millis(),
+//           r_msg->ID, r_msg->Data[0], r_msg->Data[1], r_msg->Data[2], r_msg->Data[3],
+//           r_msg->Data[4], r_msg->Data[5], r_msg->Data[6], r_msg->Data[7]);
+//  UART.println(scan);
+printMsg();
+#endif
+
   switch (r_msg->ID)  {
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
@@ -50,10 +60,14 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
        break;
      }
 
-    case MS_CLIMATE_INFO_ID: {
+    case MS_CLIMATE_INFO_ID: { // 6C8
+        debug("i see MS_CLIMATE_INFO_ID");
         if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0x24) {
           CTemp1 = r_msg->Data[2];
           CTemp2 = r_msg->Data[4];
+          debug("CTemp1=",CTemp1);
+          debug("CTemp2=",CTemp2);
+
         }
         if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x01 && r_msg->Data[2] == 0xE0) {
           CNapr = r_msg->Data[3] - 0x21;
@@ -137,14 +151,22 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
       }
 
     case MS_TEMP_OUT_DOOR_ID: {
-        if ((r_msg->Data[0] == 0x46) && (COutT != p_COutT)) {
+        debug("i see MS_TEMP_OUT_DOOR_ID"); //todo
+        debug("COutT=",COutT);
+        debug("p_COutT=",p_COutT);
+        if ((r_msg->Data[0] == 0x46) ){ // && (COutT != p_COutT)) {
           COutT = (r_msg->Data[2] / 2) - 40;
           intCOutT = (r_msg->Data[2] / 2) - 40;
+          debug("(r_msg->Data[0] == 0x46)"); // todo
+          debug("COutT=",COutT);
+          debug("String(COutT)=" + String(COutT));
           if (intCOutT < 0) {
+            debug("intCOutT < 0");
             UART.println("<COutT:" + '-' + String(COutT) + ">");
           }
           else
           {
+            debug("intCOutT > 0");
             UART.println("<COutT:" + String(COutT) + ">");
           }
           p_COutT = COutT;
@@ -321,11 +343,4 @@ void msReceivedMessageProcess(CanMsg *r_msg) {
 
   }
 
-#ifdef DEBUG
-  char scan[40];
-  sprintf (scan, "\n % d: % 04X # %02X %02X %02X %02X %02X %02X %02X %02X ", millis(),
-           r_msg->ID, r_msg->Data[0], r_msg->Data[1], r_msg->Data[2], r_msg->Data[3],
-           r_msg->Data[4], r_msg->Data[5], r_msg->Data[6], r_msg->Data[7]);
-  UART.print(scan);
-#endif
 }
