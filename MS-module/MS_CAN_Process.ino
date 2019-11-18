@@ -63,87 +63,87 @@ printMsg();
     case MS_CLIMATE_INFO_ID: { // 6C8
         debug("i see MS_CLIMATE_INFO_ID");
         if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0x24) {
-          CTemp1 = r_msg->Data[2];
-          CTemp2 = r_msg->Data[4];
-          debug("CTemp1=",CTemp1);
-          debug("CTemp2=",CTemp2);
+          climaTemperatureDigit1 = r_msg->Data[2];
+          climaTemperatureDigit2 = r_msg->Data[4];
+          debug("climaTemperatureDigit1=",climaTemperatureDigit1);
+          debug("climaTemperatureDigit2=",climaTemperatureDigit2);
 
         }
         if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x01 && r_msg->Data[2] == 0xE0) {
-          CNapr = r_msg->Data[3] - 0x21;
+          climaDirection = r_msg->Data[3] - 0x21;
         }
         if (r_msg->Data[0] == 0x22 && r_msg->Data[4] == 0x25) {
           if (r_msg->Data[5] == 0x01) {
-            CEco = 0x30;
+            climaECO = 0x30;
           }
           if (r_msg->Data[5] == 0x03) {
-            CEco = 0x31;
+            climaECO = 0x31;
           }
         }
-        if (CEco == 0x30) {
+        if (climaECO == 0x30) {
           if (r_msg->Data[0] == 0x23 && r_msg->Data[1] == 0x26) {
-            CSpeed = r_msg->Data [6];
-            if (CSpeed != p_CSpeed) {
-              UART.println("<CSpeed:" + String(CSpeed) + ">");
-              p_CSpeed = CSpeed;
+            climaSpeed = r_msg->Data [6];
+            if (climaSpeed != previous_climaSpeed) {
+              UART.println("<climaSpeed:" + String(climaSpeed) + ">");
+              previous_climaSpeed = climaSpeed;
             }
           }
         }
-        if (CEco == 0x31) {
+        if (climaECO == 0x31) {
           if (r_msg->Data[0] == 0x24 && r_msg->Data[1] == 0x50) {
-            CSpeed = r_msg->Data[3];
-            if (CSpeed != p_CSpeed) {
-              UART.println("<CSpeed:" + String(CSpeed) + ">");
-              p_CSpeed = CSpeed;
+            climaSpeed = r_msg->Data[3];
+            if (climaSpeed != previous_climaSpeed) {
+              UART.println("<climaSpeed:" + String(climaSpeed) + ">");
+              previous_climaSpeed = climaSpeed;
             }
           }
         }
         if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0x00 && r_msg->Data[6] == 0xB0 && r_msg->Data[7] == 0xA3) {
-          CTemp1 = r_msg->Data[2];
-          CTemp2 = r_msg->Data[4];
-          if ((CTemp1 != p_CTemp1) || (CTemp2 != p_CTemp2)) {
-            UART.println("<CTemp:" + String(CTemp1) + String(CTemp2) + ">");
-            p_CTemp1 = CTemp1;
-            p_CTemp2 = CTemp2;
+          climaTemperatureDigit1 = r_msg->Data[2];
+          climaTemperatureDigit2 = r_msg->Data[4];
+          if ((climaTemperatureDigit1 != previous_climaTemperatureDigit1) || (climaTemperatureDigit2 != previous_climaTemperatureDigit2)) {
+            UART.println("<CTemp:" + String(climaTemperatureDigit1) + String(climaTemperatureDigit2) + ">");
+            previous_climaTemperatureDigit1 = climaTemperatureDigit1;
+            previous_climaTemperatureDigit2 = climaTemperatureDigit2;
           }
         }
         if (r_msg->Data[0] == 0x21 && r_msg->Data[1] == 0xE0 && r_msg->Data[3] == 0xA4) {
-          CNapr = r_msg->Data[2] - 0x21;
-          if (CNapr != p_CNapr) {
-            UART.println("<CNapr:" + String(CNapr) + ">");
-            p_CNapr = CNapr;
+          climaDirection = r_msg->Data[2] - 0x21;
+          if (climaDirection != previous_climaDirection) {
+            UART.println("<climaDirection:" + String(climaDirection) + ">");
+            previous_climaDirection = climaDirection;
           }
         }
         if (r_msg->Data[0] == 0x10 && r_msg->Data[6] == 0x25) {
           if (r_msg->Data[7] == 0x01) {
-            CEco = 0x30;
+            climaECO = 0x30;
           }
           if (r_msg->Data[7] == 0x03) {
-            CEco = 0x31;
+            climaECO = 0x31;
           }
-          if (CEco != p_CEco) {
-            UART.println("<CEco:" + String(CEco) + ">");
-            p_CEco = CEco;
+          if (climaECO != previous_climaECO) {
+            UART.println("<climaECO:" + String(climaECO) + ">");
+            previous_climaECO = climaECO;
           }
         }
         if (r_msg->Data[0] == 0x22 && r_msg->Data[1] == 0x50) {
-          CSpeed = r_msg->Data[3];
-          if (CSpeed != p_CSpeed) {
-            UART.println("<CSpeed:" + String(CSpeed) + ">");
-            p_CSpeed = CSpeed;
+          climaSpeed = r_msg->Data[3];
+          if (climaSpeed != previous_climaSpeed) {
+            UART.println("<climaSpeed:" + String(climaSpeed) + ">");
+            previous_climaSpeed = climaSpeed;
           }
         }
         if ( r_msg->Data[0] == 0x25 && r_msg->Data[1] == 0xA5 && r_msg->Data[2] == 0x02  && r_msg->Data[4] == 0x50 && r_msg->Data[5] == 0x00 && r_msg->Data[6] == 0x41 && r_msg->Data[7] == 0x59) {
           if (r_msg->Data[3] == 0xE0) {
-            CNapr = 0x38;
-            CSpeed = 0x41;
-            if (CNapr != p_CNapr) {
-              UART.println("<CNapr:" + String(CNapr) + ">");
-              p_CNapr = CNapr;
+            climaDirection = 0x38;
+            climaSpeed = 0x41;
+            if (climaDirection != previous_climaDirection) {
+              UART.println("<climaDirection:" + String(climaDirection) + ">");
+              previous_climaDirection = climaDirection;
             }
-            if (CSpeed != p_CSpeed) {
-              UART.println("<CSpeed:" + String(CSpeed) + ">");
-              p_CSpeed = CSpeed;
+            if (climaSpeed != previous_climaSpeed) {
+              UART.println("<climaSpeed:" + String(climaSpeed) + ">");
+              previous_climaSpeed = climaSpeed;
             }
           }
         }
@@ -152,24 +152,19 @@ printMsg();
 
     case MS_TEMP_OUT_DOOR_ID: {
         debug("i see MS_TEMP_OUT_DOOR_ID"); //todo
-        debug("COutT=",COutT);
-        debug("p_COutT=",p_COutT);
-        if ((r_msg->Data[0] == 0x46) ){ // && (COutT != p_COutT)) {
-          COutT = (r_msg->Data[2] / 2) - 40;
-          intCOutT = (r_msg->Data[2] / 2) - 40;
-          debug("(r_msg->Data[0] == 0x46)"); // todo
-          debug("COutT=",COutT);
-          debug("String(COutT)=" + String(COutT));
-          if (intCOutT < 0) {
-            debug("intCOutT < 0");
-            UART.println("<COutT:" + '-' + String(COutT) + ">");
-          }
-          else
-          {
-            debug("intCOutT > 0");
-            UART.println("<COutT:" + String(COutT) + ">");
-          }
-          p_COutT = COutT;
+        debug("climaOutTemperature=",climaOutTemperature);
+        debug("previous_climaOutTemperature=",previous_climaOutTemperature);
+        if ((r_msg->Data[0] == 0x46) ){
+          climaOutTemperature = (r_msg->Data[2] / 2) - 40;
+            if (climaOutTemperature != previous_climaOutTemperature)) {
+                  debug("(r_msg->Data[0] == 0x46)"); // todo
+                  debug("climaOutTemperature=",climaOutTemperature);
+                  debug("String(climaOutTemperature)=" + String(climaOutTemperature));
+
+                  UART.println("<climaOutTemperature:" + String(climaOutTemperature) + ">");
+
+                  previous_climaOutTemperature = climaOutTemperature;
+             }
         }
         break;
       }

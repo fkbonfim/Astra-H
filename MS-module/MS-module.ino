@@ -32,20 +32,19 @@
 long nextTickTime = 0;
 
 // climate data
-char CTemp1 = 0;
-char CTemp2 = 0;
-char CNapr;
-char CSpeed;
-char CEco;
-char p_CTemp1;
-char p_CTemp2;
-char p_CNapr;
-char p_CSpeed;
-char p_CEco;
+char climaTemperatureDigit1 = 0;
+char climaTemperatureDigit2 = 0;
+char climaDirection;
+char climaSpeed;
+char climaECO;
+char previous_climaTemperatureDigit1;
+char previous_climaTemperatureDigit2;
+char previous_climaDirection;
+char previous_climaSpeed;
+char previous_climaECO;
 // outdoor
-int intCOutT;
-int COutT;
-int p_COutT;
+int climaOutTemperature;
+int previous_climaOutTemperature;
 
 
 
