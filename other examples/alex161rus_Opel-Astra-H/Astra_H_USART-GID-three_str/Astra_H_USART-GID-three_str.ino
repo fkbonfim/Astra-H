@@ -97,8 +97,8 @@ char p_CSpeed;
 char p_CEco;
 
 int intCOutT;
-char COutT;
-char p_COutT;
+int COutT;
+int p_COutT;
 
 uint32_t btn = 0;
 uint32_t time_request_ecc = 0;

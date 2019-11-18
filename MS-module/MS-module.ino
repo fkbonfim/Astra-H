@@ -44,8 +44,8 @@ char p_CSpeed;
 char p_CEco;
 // outdoor
 int intCOutT;
-char COutT;
-char p_COutT;
+int COutT;
+int p_COutT;
 
 
 
@@ -63,9 +63,9 @@ enum Activebus {
 
 void setup()
 {
-  UART.begin(115200); // output to A2 pin
+  UART.begin(115200);
   UART.println("Hello World!");
-  UART.println("Starting \"1-button-compressor switch plus\" v21 2018-11-22");
+  UART.println("Starting MS CAN module v1 2019-11-18");
   debug("checking debug level");
   log("checking log level");
 
@@ -116,6 +116,10 @@ void loop() {
         nextTickTime += TICK_DELAY;
         msWakeUpScreen(); // only MS
         log("tick");
+
+        debug("String(35) = "+String(35));
+        debug("String(35,DEC) = "+String(35,DEC));
+        debug("String(0x35) = "+String(0x35));
     }
 }
 // close void loop
