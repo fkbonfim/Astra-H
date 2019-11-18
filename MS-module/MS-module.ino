@@ -115,10 +115,6 @@ void loop() {
         nextTickTime += TICK_DELAY;
         msWakeUpScreen(); // only MS
         log("tick");
-
-        debug("String(35) = "+String(35));
-        debug("String(35,DEC) = "+String(35,DEC));
-        debug("String(0x35) = "+String(0x35));
     }
 }
 // close void loop
