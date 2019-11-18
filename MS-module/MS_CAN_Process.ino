@@ -156,7 +156,7 @@ printMsg();
         debug("previous_climaOutTemperature=",previous_climaOutTemperature);
         if ((r_msg->Data[0] == 0x46) ){
           climaOutTemperature = (r_msg->Data[2] / 2) - 40;
-            if (climaOutTemperature != previous_climaOutTemperature)) {
+            if (climaOutTemperature != previous_climaOutTemperature) {
                   debug("(r_msg->Data[0] == 0x46)"); // todo
                   debug("climaOutTemperature=",climaOutTemperature);
                   debug("String(climaOutTemperature)=" + String(climaOutTemperature));
